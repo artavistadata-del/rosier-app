@@ -7,14 +7,6 @@ import { getCurrentUser } from '@/lib/auth';
 import { getUnreadCount } from '@/lib/store';
 import { AuthSession } from '@/types';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useRouter } from 'next/navigation';
-import { logout } from '@/lib/auth';
 
 interface HeaderProps {
   title?: string;
@@ -23,7 +15,6 @@ interface HeaderProps {
 export default function Header({ title }: HeaderProps) {
   const [user, setUser] = useState<AuthSession['user'] | null>(null);
   const [unreadCount, setUnreadCount] = useState(0);
-  const router = useRouter();
 
   useEffect(() => {
     const u = getCurrentUser();
@@ -33,64 +24,38 @@ export default function Header({ title }: HeaderProps) {
     }
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    router.push('/login');
-  };
-
   return (
-    <header className="h-16 bg-card border-b border-border flex items-center justify-between px-6 flex-shrink-0 sticky top-0 z-10">
+    <header className="h-24 bg-transparent flex items-center justify-between px-8 flex-shrink-0">
       <div>
         {title && (
-          <h1 className="text-lg font-semibold text-foreground">{title}</h1>
+          <h1 className="text-2xl font-extrabold text-slate-800">{title}</h1>
         )}
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
+        {/* Mock Date Pickers matching reference */}
+        <Button variant="outline" className="h-10 px-4 rounded-xl text-slate-500 border-slate-200 bg-white shadow-sm font-medium hover:bg-slate-50 hidden sm:flex">
+          10-06-2024
+          <ChevronDown size={16} className="ml-2 text-slate-400" />
+        </Button>
+        <Button variant="outline" className="h-10 px-4 rounded-xl text-slate-500 border-slate-200 bg-white shadow-sm font-medium hover:bg-slate-50 hidden sm:flex">
+          10-10-2024
+          <ChevronDown size={16} className="ml-2 text-slate-400" />
+        </Button>
+
         {/* Notification Bell */}
         {user?.role === 'distributor' && (
           <Link href="/notifications">
-            <Button variant="ghost" size="icon" className="relative">
+            <Button variant="outline" size="icon" className="relative h-10 w-10 rounded-xl border-slate-200 bg-white shadow-sm text-slate-500 hover:bg-slate-50">
               <Bell size={18} />
               {unreadCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 bg-destructive text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none">
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#00AEEF] text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none border-2 border-white">
                   {unreadCount > 9 ? '9+' : unreadCount}
                 </span>
               )}
             </Button>
           </Link>
         )}
-
-        {/* User Menu */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center gap-2 h-9 px-2">
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#00AEEF] to-[#8DC63F] flex items-center justify-center">
-                <span className="text-white text-xs font-bold">
-                  {user?.name?.charAt(0) ?? 'U'}
-                </span>
-              </div>
-              <div className="text-left hidden sm:block">
-                <p className="text-xs font-medium text-foreground leading-tight">{user?.name}</p>
-                <p className="text-[10px] text-muted-foreground leading-tight capitalize">{user?.role}</p>
-              </div>
-              <ChevronDown size={14} className="text-muted-foreground" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            {user?.role === 'distributor' && (
-              <DropdownMenuItem asChild>
-                <Link href="/profile">My Profile</Link>
-              </DropdownMenuItem>
-            )}
-            <DropdownMenuItem
-              onClick={handleLogout}
-              className="text-destructive focus:text-destructive"
-            >
-              Sign Out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
     </header>
   );

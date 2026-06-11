@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import StatsCard from '@/components/dashboard/StatsCard';
+import OverviewChart from '@/components/dashboard/OverviewChart';
+import AnalyticsChart from '@/components/dashboard/AnalyticsChart';
 import { getCurrentUser } from '@/lib/auth';
 import { getRequestsByUser } from '@/lib/store';
 import { SampleRequest, AuthSession } from '@/types';
@@ -43,101 +45,128 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout title="Dashboard" requireRole="distributor">
-      {/* Welcome Banner */}
-      <div className="bg-gradient-to-r from-[#0066B3] to-[#00AEEF] rounded-2xl p-6 mb-6 relative overflow-hidden">
-        <div className="absolute right-0 top-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/4 translate-x-1/4" />
-        <div className="relative z-10">
-          <p className="text-white/80 text-sm">Welcome back,</p>
-          <h2 className="text-white text-2xl font-bold mt-0.5">{user?.name ?? '...'}</h2>
-          <p className="text-white/70 text-sm mt-1">{user?.company}</p>
-        </div>
-        <div className="relative z-10 mt-4">
-          <Link href="/requests/new">
-            <Button className="bg-white text-[#0066B3] hover:bg-white/90 font-semibold h-9 text-sm">
-              <Plus size={16} className="mr-2" />
-              New Sample Request
-            </Button>
-          </Link>
-        </div>
-      </div>
-
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <StatsCard
           title="Total Requests"
           value={totalRequests}
           icon={ClipboardList}
-          iconColor="text-[#0066B3]"
-          iconBg="bg-[#0066B3]/10"
+          bgClass="bg-gradient-to-br from-[#a78bfa] to-[#9333ea] shadow-[#a78bfa]/30"
         />
         <StatsCard
           title="Pending Review"
           value={pendingRequests}
           icon={Clock}
-          iconColor="text-yellow-600"
-          iconBg="bg-yellow-100"
+          bgClass="bg-gradient-to-br from-[#3b82f6] to-[#2563eb] shadow-[#3b82f6]/30"
         />
         <StatsCard
           title="Approved"
           value={approvedRequests}
           icon={CheckCircle2}
-          iconColor="text-[#8DC63F]"
-          iconBg="bg-[#8DC63F]/10"
+          bgClass="bg-gradient-to-br from-[#fb7185] to-[#f43f5e] shadow-[#fb7185]/30"
         />
         <StatsCard
           title="Completed"
           value={completedRequests}
           icon={PackageCheck}
-          iconColor="text-purple-600"
-          iconBg="bg-purple-100"
+          bgClass="bg-gradient-to-br from-[#fb923c] to-[#ea580c] shadow-[#fb923c]/30"
         />
       </div>
 
-      {/* Recent Requests */}
-      <div className="bg-card rounded-2xl border border-border">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-border">
-          <h3 className="font-semibold text-foreground">Recent Requests</h3>
-          <Link href="/requests">
-            <Button variant="ghost" size="sm" className="text-[#0066B3] text-xs h-7">
-              View All <ArrowRight size={14} className="ml-1" />
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="lg:col-span-2 h-[350px]">
+          <OverviewChart />
+        </div>
+        <div className="lg:col-span-1 h-[350px]">
+          <AnalyticsChart />
+        </div>
+      </div>
+
+      {/* Bottom Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent Activities Timeline */}
+        <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm col-span-1">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="font-bold text-slate-800">Recent Activities</h3>
+            <button className="text-slate-400 hover:text-slate-600">...</button>
+          </div>
+          
+          <div className="space-y-6 relative before:absolute before:inset-0 before:ml-4 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
+            {recentRequests.slice(0, 3).map((req, i) => (
+              <div key={`activity-${req.id}`} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full border-2 border-white bg-[#00AEEF] shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 relative z-10 text-white">
+                  {i === 0 ? <CheckCircle2 size={14} /> : i === 1 ? <Clock size={14} /> : <ClipboardList size={14} />}
+                </div>
+                
+                <div className="w-[calc(100%-3rem)] md:w-[calc(50%-2rem)] p-3 rounded-2xl border border-slate-100 bg-slate-50/50 shadow-sm">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-bold text-sm text-slate-800">Status Updated</span>
+                    <span className="text-[10px] font-medium text-slate-400">{format(new Date(req.updatedAt), 'MMM dd')}</span>
+                  </div>
+                  <p className="text-xs text-slate-500">
+                    {getProductName(req.productId)} is now {req.status}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <Link href="/requests/new">
+            <Button className="w-full mt-6 bg-[#0066B3] hover:bg-[#004d86] text-white rounded-xl shadow-md font-semibold">
+              <Plus size={16} className="mr-2" /> New Request
             </Button>
           </Link>
         </div>
 
-        {recentRequests.length === 0 ? (
-          <div className="py-12 text-center">
-            <ClipboardList size={36} className="text-muted-foreground/40 mx-auto mb-3" />
-            <p className="text-muted-foreground text-sm">No requests yet</p>
-            <Link href="/requests/new" className="mt-3 inline-block">
-              <Button size="sm" className="bg-[#0066B3] hover:bg-[#004d86] text-white">
-                Create First Request
+        {/* Recent Requests Table */}
+        <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm col-span-1 lg:col-span-2 flex flex-col">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="font-bold text-slate-800">Recent Requests</h3>
+              <p className="text-xs text-slate-500 mt-1">Overview of latest requests</p>
+            </div>
+            <Link href="/requests">
+              <Button variant="ghost" size="sm" className="text-[#0066B3] text-xs h-8 rounded-lg">
+                View All <ArrowRight size={14} className="ml-1" />
               </Button>
             </Link>
           </div>
-        ) : (
-          <div className="divide-y divide-border">
-            {recentRequests.map((req) => (
-              <Link
-                key={req.id}
-                href={`/requests/${req.id}`}
-                className="flex items-center gap-4 px-5 py-3.5 hover:bg-muted/40 transition-colors"
-              >
-                <div className="w-9 h-9 rounded-xl bg-[#0066B3]/10 flex items-center justify-center flex-shrink-0">
-                  <ClipboardList size={16} className="text-[#0066B3]" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-foreground truncate">
-                    {getProductName(req.productId)}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    {req.quantity} units • {format(new Date(req.createdAt), 'dd MMM yyyy')}
-                  </p>
-                </div>
-                <RequestStatusBadge status={req.status} />
-              </Link>
-            ))}
+
+          <div className="overflow-x-auto flex-1">
+            <table className="w-full text-left text-sm">
+              <thead className="text-xs text-slate-400 uppercase bg-slate-50/50 rounded-xl">
+                <tr>
+                  <th className="px-4 py-3 font-semibold rounded-l-xl">ID</th>
+                  <th className="px-4 py-3 font-semibold">Product</th>
+                  <th className="px-4 py-3 font-semibold">Qty</th>
+                  <th className="px-4 py-3 font-semibold rounded-r-xl">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100/50">
+                {recentRequests.slice(0, 4).map((req) => (
+                  <tr key={req.id} className="hover:bg-slate-50/50 transition-colors group">
+                    <td className="px-4 py-4 font-medium text-slate-600">
+                      {req.id.split('-')[0].toUpperCase()}
+                    </td>
+                    <td className="px-4 py-4 text-slate-800 font-medium">
+                      {getProductName(req.productId)}
+                    </td>
+                    <td className="px-4 py-4 text-slate-500">
+                      {req.quantity}
+                    </td>
+                    <td className="px-4 py-4">
+                      <RequestStatusBadge status={req.status} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            
+            {recentRequests.length === 0 && (
+              <div className="text-center py-8 text-slate-400 text-sm">No requests found.</div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </DashboardLayout>
   );

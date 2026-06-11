@@ -35,6 +35,14 @@ const CATEGORY_COLORS: Record<string, string> = {
   Specialty: 'bg-pink-100 text-pink-700',
 };
 
+const CATEGORY_CARD_BG: Record<string, string> = {
+  NPK: 'bg-gradient-to-br from-blue-50/80 to-white border-blue-100/50',
+  Organic: 'bg-gradient-to-br from-green-50/80 to-white border-green-100/50',
+  Micro: 'bg-gradient-to-br from-orange-50/80 to-white border-orange-100/50',
+  Biological: 'bg-gradient-to-br from-purple-50/80 to-white border-purple-100/50',
+  Specialty: 'bg-gradient-to-br from-pink-50/80 to-white border-pink-100/50',
+};
+
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>(PRODUCTS);
   const [search, setSearch] = useState('');
@@ -47,6 +55,7 @@ export default function AdminProductsPage() {
   const [formCategory, setFormCategory] = useState<ProductCategory>('NPK');
   const [formDesc, setFormDesc] = useState('');
   const [formPackaging, setFormPackaging] = useState('');
+  const [formImage, setFormImage] = useState('');
 
   const filtered = products.filter(
     (p) =>
@@ -61,6 +70,7 @@ export default function AdminProductsPage() {
     setFormCategory('NPK');
     setFormDesc('');
     setFormPackaging('');
+    setFormImage('');
     setShowDialog(true);
   };
 
@@ -70,6 +80,7 @@ export default function AdminProductsPage() {
     setFormCategory(product.category);
     setFormDesc(product.description);
     setFormPackaging(product.packaging);
+    setFormImage(product.image || '');
     setShowDialog(true);
   };
 
@@ -83,7 +94,7 @@ export default function AdminProductsPage() {
       setProducts((prev) =>
         prev.map((p) =>
           p.id === editingProduct.id
-            ? { ...p, name: formName, category: formCategory, description: formDesc, packaging: formPackaging }
+            ? { ...p, name: formName, category: formCategory, description: formDesc, packaging: formPackaging, image: formImage }
             : p
         )
       );
@@ -95,7 +106,7 @@ export default function AdminProductsPage() {
         category: formCategory,
         description: formDesc,
         packaging: formPackaging,
-        image: '',
+        image: formImage,
         features: [],
         createdAt: new Date().toISOString().split('T')[0],
       };
@@ -127,62 +138,77 @@ export default function AdminProductsPage() {
         </div>
         <Button
           onClick={openCreate}
-          className="bg-[#0066B3] hover:bg-[#004d86] text-white gap-2 h-10"
+          className="bg-[#0066B3] hover:bg-[#004d86] text-white gap-2 h-10 rounded-xl"
         >
           <Plus size={16} /> Add Product
         </Button>
       </div>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {filtered.map((product) => (
           <div
             key={product.id}
-            className="bg-card rounded-2xl border border-border p-4 hover:shadow-md transition-shadow"
+            className={cn(
+              "rounded-[2rem] p-5 border shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_20px_-4px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group",
+              CATEGORY_CARD_BG[product.category] || "bg-white border-slate-100"
+            )}
           >
-            <div className="flex items-start justify-between gap-2">
-              <div className="flex items-start gap-3 flex-1 min-w-0">
-                <div className="w-10 h-10 rounded-xl bg-[#0066B3]/10 flex items-center justify-center flex-shrink-0">
-                  <Package size={18} className="text-[#0066B3]" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-foreground line-clamp-2 leading-snug">
-                    {product.name}
-                  </p>
-                  <span
-                    className={cn(
-                      'mt-1 inline-block text-xs font-semibold px-2 py-0.5 rounded-full',
-                      CATEGORY_COLORS[product.category]
-                    )}
-                  >
-                    {product.category}
-                  </span>
-                </div>
+            {/* Top Row: Icon & Actions */}
+            <div className="flex items-start justify-between">
+              <div className={cn(
+                "w-11 h-11 rounded-[0.85rem] flex items-center justify-center flex-shrink-0 transition-colors",
+                CATEGORY_COLORS[product.category]
+              )}>
+                <Package size={20} />
+              </div>
+              <div className="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button
+                  onClick={() => openEdit(product)}
+                  className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                  title="Edit Product"
+                >
+                  <Pencil size={13} />
+                </button>
+                <button
+                  onClick={() => setDeleteTarget(product)}
+                  className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-red-50 hover:text-red-500 transition-colors"
+                  title="Delete Product"
+                >
+                  <Trash2 size={13} />
+                </button>
               </div>
             </div>
 
-            <p className="text-xs text-muted-foreground mt-2.5 line-clamp-2">{product.description}</p>
-            <p className="text-xs text-muted-foreground mt-1.5 bg-muted/50 rounded-lg px-2 py-1 inline-block">
-              {product.packaging}
-            </p>
+            {/* Content */}
+            <div className="mt-5 flex-1">
+              <h3 className="text-[17px] font-bold text-slate-800 leading-snug line-clamp-2">
+                {product.name}
+              </h3>
+              <p className="text-[13px] text-slate-500 mt-2.5 line-clamp-3 leading-relaxed">
+                {product.description}
+              </p>
+            </div>
 
-            <div className="flex gap-2 mt-3 pt-3 border-t border-border">
-              <Button
-                variant="outline"
-                size="sm"
+            {/* Bottom Section */}
+            <div className="mt-5 pt-5 border-t border-slate-50/50">
+              <div className="flex items-center justify-between mb-4 px-1">
+                <span className={cn(
+                  'text-[11px] font-bold px-2.5 py-1 rounded-full',
+                  CATEGORY_COLORS[product.category]
+                )}>
+                  {product.category}
+                </span>
+                <span className="text-[11px] font-medium text-slate-400 bg-slate-50 px-2.5 py-1 rounded-full">
+                  {product.packaging}
+                </span>
+              </div>
+              <button
                 onClick={() => openEdit(product)}
-                className="flex-1 h-8 text-xs gap-1"
+                className="w-full py-2.5 rounded-full bg-slate-50 text-slate-600 text-[13px] font-semibold hover:bg-[#0066B3] hover:text-white transition-colors"
               >
-                <Pencil size={12} /> Edit
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setDeleteTarget(product)}
-                className="flex-1 h-8 text-xs gap-1 text-destructive hover:text-destructive border-destructive/30 hover:bg-destructive/10"
-              >
-                <Trash2 size={12} /> Delete
-              </Button>
+                Manage Product
+              </button>
             </div>
           </div>
         ))}
@@ -224,6 +250,11 @@ export default function AdminProductsPage() {
                 onChange={(e) => setFormDesc(e.target.value)}
                 placeholder="Product description..."
               />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Image File Name (Optional)</Label>
+              <Input value={formImage} onChange={(e) => setFormImage(e.target.value)} placeholder="/images/products/example.jpg" />
+              <p className="text-[11px] text-slate-400 mt-1">Place the image in the <code className="bg-slate-100 rounded px-1">public/images/products</code> folder.</p>
             </div>
           </div>
           <DialogFooter>

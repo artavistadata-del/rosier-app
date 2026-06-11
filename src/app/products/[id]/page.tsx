@@ -46,10 +46,14 @@ export default function ProductDetailPage({
         {/* Left: Image + quick info */}
         <div className="lg:col-span-1 space-y-4">
           {/* Product Image */}
-          <div className="bg-gradient-to-br from-[#F5F7FA] to-[#D9E2EC] rounded-2xl h-64 flex items-center justify-center border border-border">
-            <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-[#0066B3]/10 to-[#00AEEF]/10 flex items-center justify-center">
-              <Package size={52} className="text-[#0066B3]/50" />
-            </div>
+          <div className="bg-gradient-to-br from-[#F5F7FA] to-[#D9E2EC] rounded-2xl h-64 flex items-center justify-center border border-border overflow-hidden relative">
+            {product.image ? (
+              <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-[#0066B3]/10 to-[#00AEEF]/10 flex items-center justify-center">
+                <Package size={52} className="text-[#0066B3]/50" />
+              </div>
+            )}
           </div>
 
           {/* Quick Info Card */}

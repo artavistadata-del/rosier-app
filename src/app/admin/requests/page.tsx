@@ -107,58 +107,103 @@ export default function AdminRequestsPage() {
         </div>
       )}
 
-      {/* Table */}
-      <div className="bg-card rounded-2xl border border-border overflow-hidden">
-        {/* Header */}
-        <div className="hidden md:grid grid-cols-[1.5fr_1fr_80px_140px_120px_70px] gap-3 px-5 py-3 text-xs font-semibold text-muted-foreground border-b border-border bg-muted/30">
-          <span>Product</span>
-          <span>Distributor</span>
-          <span>Jumlah</span>
-          <span>Status</span>
-          <span>Tanggal</span>
-          <span></span>
+      {/* Table Area */}
+      <div className="bg-white rounded-[24px] border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.02)] flex flex-col mt-4 overflow-hidden">
+        
+        <div className="overflow-x-auto flex-1">
+          <table className="w-full text-left text-sm whitespace-nowrap">
+            <thead className="text-[10px] md:text-xs font-semibold text-slate-400 uppercase tracking-wider bg-white border-b border-slate-100">
+              <tr>
+                <th className="px-6 py-4 w-12 text-center">
+                  <div className="w-[18px] h-[18px] rounded-md border-2 border-slate-200 mx-auto cursor-pointer hover:border-[#0066B3] transition-colors" />
+                </th>
+                <th className="px-6 py-4 font-semibold">
+                  <div className="flex items-center gap-2 cursor-pointer hover:text-slate-600">ID <ChevronDown size={12} /></div>
+                </th>
+                <th className="px-6 py-4 font-semibold">
+                  <div className="flex items-center gap-2 cursor-pointer hover:text-slate-600">Distributor <ChevronDown size={12} /></div>
+                </th>
+                <th className="px-6 py-4 font-semibold">
+                  <div className="flex items-center gap-2 cursor-pointer hover:text-slate-600">Product <ChevronDown size={12} /></div>
+                </th>
+                <th className="px-6 py-4 font-semibold">Qty</th>
+                <th className="px-6 py-4 font-semibold">Date</th>
+                <th className="px-6 py-4 font-semibold">Status</th>
+                <th className="px-6 py-4 font-semibold text-center">Actions</th>
+              </tr>
+            </thead>
+            
+            {filtered.length === 0 ? (
+              <tbody>
+                <tr>
+                  <td colSpan={8} className="py-16 text-center text-slate-500 text-sm">
+                    Tidak ada request ditemukan.
+                  </td>
+                </tr>
+              </tbody>
+            ) : (
+              <tbody className="divide-y divide-slate-50">
+                {filtered.map((req) => (
+                  <tr key={req.id} className="hover:bg-[#f8faff] transition-colors group">
+                    <td className="px-6 py-4 text-center">
+                      <div className="w-[18px] h-[18px] rounded-md border-2 border-slate-200 mx-auto cursor-pointer group-hover:border-[#0066B3] transition-colors" />
+                    </td>
+                    <td className="px-6 py-4 font-medium text-slate-500">
+                      {req.id.split('-')[0].toUpperCase()}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#00AEEF] to-[#0066B3] text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                          {getUserName(req.userId).charAt(0)}
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-slate-800">{getUserName(req.userId)}</p>
+                          <p className="text-[11px] text-slate-500">{getCompany(req.userId)}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-slate-600 font-medium">
+                      {getProductName(req.productId)}
+                    </td>
+                    <td className="px-6 py-4 text-slate-500">
+                      {req.quantity}
+                    </td>
+                    <td className="px-6 py-4 text-slate-500 text-[13px]">
+                      {format(new Date(req.createdAt), 'dd MMM yyyy')}
+                    </td>
+                    <td className="px-6 py-4">
+                      <RequestStatusBadge status={req.status} />
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <Link 
+                        href={`/admin/requests/${req.id}`} 
+                        className="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-slate-100 text-slate-400 hover:text-[#0066B3] transition-colors"
+                        title="Review Request"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            )}
+          </table>
         </div>
 
-        {filtered.length === 0 ? (
-          <div className="py-16 text-center">
-            <p className="text-muted-foreground text-sm">Tidak ada request ditemukan</p>
+        {/* Footer Pagination */}
+        <div className="px-6 py-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between text-[13px] text-slate-500 bg-white gap-3">
+          <span>1 to {filtered.length} of {requests.length}</span>
+          <div className="flex items-center gap-4">
+            <button className="flex items-center justify-center w-8 h-8 text-slate-300 hover:text-slate-500 cursor-not-allowed" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <span className="font-medium text-slate-600">Page 1 of 1</span>
+            <button className="flex items-center justify-center w-8 h-8 text-slate-300 hover:text-slate-500 cursor-not-allowed" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
           </div>
-        ) : (
-          <div className="divide-y divide-border">
-            {filtered.map((req) => (
-              <Link
-                key={req.id}
-                href={`/admin/requests/${req.id}`}
-                className="flex flex-col md:grid md:grid-cols-[1.5fr_1fr_80px_140px_120px_70px] gap-2 md:gap-3 px-5 py-4 hover:bg-muted/30 transition-colors group"
-              >
-                <div>
-                  <p className="text-sm font-medium text-foreground group-hover:text-[#0066B3] line-clamp-1">
-                    {getProductName(req.productId)}
-                  </p>
-                  <p className="text-xs font-mono text-muted-foreground">{req.id}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-foreground">{getUserName(req.userId)}</p>
-                  <p className="text-xs text-muted-foreground">{getCompany(req.userId)}</p>
-                </div>
-                <span className="text-sm text-foreground self-center">{req.quantity} unit</span>
-                <div className="self-center">
-                  <RequestStatusBadge status={req.status} />
-                </div>
-                <span className="text-xs text-muted-foreground self-center">
-                  {format(new Date(req.createdAt), 'dd MMM yyyy')}
-                </span>
-                <span className="text-xs text-[#0066B3] font-medium self-center">
-                  Review →
-                </span>
-              </Link>
-            ))}
-          </div>
-        )}
+        </div>
       </div>
-      <p className="text-xs text-muted-foreground mt-2 text-right">
-        {filtered.length} dari {requests.length} request
-      </p>
     </DashboardLayout>
   );
 }

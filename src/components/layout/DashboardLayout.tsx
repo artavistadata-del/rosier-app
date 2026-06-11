@@ -35,11 +35,11 @@ export default function DashboardLayout({
   }, [router, requireRole]);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-screen overflow-hidden bg-slate-100 p-4 gap-4">
       <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden bg-white rounded-3xl shadow-sm">
         <Header title={title} />
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-8">
           {children}
         </main>
       </div>
