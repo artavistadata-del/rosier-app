@@ -13,18 +13,25 @@ export type User = {
 };
 
 export type ProductCategory =
-  | 'NPK'
-  | 'Organic'
-  | 'Micro'
-  | 'Biological'
-  | 'Specialty';
+  | 'Liquid Fertilizer'
+  | 'Magnesium Fertilizer'
+  | 'Micronutrient Fertilizer'
+  | 'Calcium Fertilizer'
+  | 'Starter Fertilizer'
+  | 'Liquid NPK Fertilizer'
+  | 'Zinc Fertilizer'
+  | 'Copper Fertilizer'
+  | 'Chelated Micronutrient';
 
 export type Product = {
   id: string;
   name: string;
+  brand?: string;
   category: ProductCategory;
   description: string;
   packaging: string;
+  composition?: string;
+  status?: string;
   image: string;
   features: string[];
   createdAt: string;

@@ -4,7 +4,7 @@ export const INITIAL_REQUESTS: SampleRequest[] = [
   {
     id: 'req-001',
     userId: 'user-001',
-    productId: 'prod-001',
+    productId: 'PRD001',
     quantity: 5,
     address: '123 Farming Rd, Denver, Colorado 80202',
     purpose: 'Trial for 2 hectares of rice fields',
@@ -16,7 +16,7 @@ export const INITIAL_REQUESTS: SampleRequest[] = [
   {
     id: 'req-002',
     userId: 'user-001',
-    productId: 'prod-003',
+    productId: 'PRD003',
     quantity: 3,
     address: '123 Farming Rd, Denver, Colorado 80202',
     purpose: 'Experiment on horticulture garden',
@@ -28,7 +28,7 @@ export const INITIAL_REQUESTS: SampleRequest[] = [
   {
     id: 'req-003',
     userId: 'user-001',
-    productId: 'prod-007',
+    productId: 'PRD007',
     quantity: 10,
     address: '123 Farming Rd, Denver, Colorado 80202',
     purpose: 'Testing the effectiveness of biological fertilizer on soybeans',
@@ -40,7 +40,7 @@ export const INITIAL_REQUESTS: SampleRequest[] = [
   {
     id: 'req-004',
     userId: 'user-001',
-    productId: 'prod-009',
+    productId: 'PRD009',
     quantity: 2,
     address: '123 Farming Rd, Denver, Colorado 80202',
     purpose: 'Fertigation test for tomato greenhouse',
@@ -52,7 +52,7 @@ export const INITIAL_REQUESTS: SampleRequest[] = [
   {
     id: 'req-005',
     userId: 'user-001',
-    productId: 'prod-005',
+    productId: 'PRD005',
     quantity: 4,
     address: '123 Farming Rd, Denver, Colorado 80202',
     purpose: 'Trial on rice plants experiencing zinc deficiency',
@@ -64,7 +64,7 @@ export const INITIAL_REQUESTS: SampleRequest[] = [
   {
     id: 'req-006',
     userId: 'user-001',
-    productId: 'prod-011',
+    productId: 'PRD006',
     quantity: 2,
     address: '123 Farming Rd, Denver, Colorado 80202',
     purpose: 'Product comparison for a proposal to fostered farmers',
@@ -78,7 +78,7 @@ export const INITIAL_REQUESTS: SampleRequest[] = [
   {
     id: 'req-007',
     userId: 'user-003',
-    productId: 'prod-002',
+    productId: 'PRD002',
     quantity: 6,
     address: '12 Hero St, Austin, Texas 73301',
     purpose: 'Product evaluation for distributors in East Java',
@@ -90,7 +90,7 @@ export const INITIAL_REQUESTS: SampleRequest[] = [
   {
     id: 'req-008',
     userId: 'user-003',
-    productId: 'prod-004',
+    productId: 'PRD004',
     quantity: 8,
     address: '12 Hero St, Austin, Texas 73301',
     purpose: 'Bio-humus trial for sugarcane plants',

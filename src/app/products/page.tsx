@@ -8,6 +8,7 @@ import { PRODUCT_CATEGORIES } from '@/constants';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, X } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { ProductCategory } from '@/types';
 
@@ -58,22 +59,27 @@ export default function ProductsPage() {
           )}
         </div>
 
-        {/* Category Tabs */}
-        <div className="flex gap-2 overflow-x-auto pb-1 sm:pb-0">
-          {(['All', ...PRODUCT_CATEGORIES] as (ProductCategory | 'All')[]).map((cat) => (
-            <button
-              key={cat}
-              onClick={() => { setSelectedCategory(cat); setPage(1); }}
-              className={cn(
-                'px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all',
-                selectedCategory === cat
-                  ? 'bg-[#0066B3] text-white shadow-sm'
-                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
-              )}
-            >
-              {cat}
-            </button>
-          ))}
+        {/* Category Filter */}
+        <div className="w-full sm:w-[250px] shrink-0">
+          <Select
+            value={selectedCategory}
+            onValueChange={(val) => {
+              setSelectedCategory(val as ProductCategory | 'All');
+              setPage(1);
+            }}
+          >
+            <SelectTrigger className="w-full h-10 bg-white">
+              <SelectValue placeholder="All Categories" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="All">All Categories</SelectItem>
+              {PRODUCT_CATEGORIES.map((cat) => (
+                <SelectItem key={cat} value={cat}>
+                  {cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

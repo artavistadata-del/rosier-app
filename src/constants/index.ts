@@ -37,11 +37,15 @@ export const STATUS_LABELS: Record<RequestStatus, string> = {
 };
 
 export const PRODUCT_CATEGORIES = [
-  'NPK',
-  'Organic',
-  'Micro',
-  'Biological',
-  'Specialty',
+  'Liquid Fertilizer',
+  'Magnesium Fertilizer',
+  'Micronutrient Fertilizer',
+  'Calcium Fertilizer',
+  'Starter Fertilizer',
+  'Liquid NPK Fertilizer',
+  'Zinc Fertilizer',
+  'Copper Fertilizer',
+  'Chelated Micronutrient',
 ] as const;
 
 export const ADMIN_STATUS_TRANSITIONS: Record<RequestStatus, RequestStatus[]> = {
