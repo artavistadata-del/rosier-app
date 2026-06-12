@@ -56,29 +56,64 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 relative overflow-hidden p-4 sm:p-8 z-0">
       
-      {/* Animated Background Orbs */}
-      <div className="absolute inset-0 pointer-events-none z-[-1] overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[#0066B3]/20 blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-[#00AEEF]/20 blur-[120px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
-        <div className="absolute top-[20%] right-[20%] w-[40vw] h-[40vw] rounded-full bg-[#8DC63F]/20 blur-[100px] animate-pulse" style={{ animationDuration: '9s', animationDelay: '4s' }} />
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes blob {
+          0% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(40px, -50px) scale(1.1); }
+          66% { transform: translate(-30px, 30px) scale(0.9); }
+          100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+          animation: blob 8s infinite alternate ease-in-out;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+        .animation-delay-6000 {
+          animation-delay: 6s;
+        }
+      `}} />
+
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 pointer-events-none z-[-1] overflow-hidden bg-slate-50/50">
+        {/* Moving Gradient Orbs */}
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#0066B3]/25 blur-[100px] animate-blob" />
+        <div className="absolute top-[10%] right-[-10%] w-[45vw] h-[45vw] rounded-full bg-[#00AEEF]/25 blur-[100px] animate-blob animation-delay-2000" />
+        <div className="absolute bottom-[-15%] left-[5%] w-[55vw] h-[55vw] rounded-full bg-[#8DC63F]/20 blur-[120px] animate-blob animation-delay-4000" />
+        <div className="absolute bottom-[5%] right-[15%] w-[40vw] h-[40vw] rounded-full bg-indigo-400/20 blur-[100px] animate-blob animation-delay-6000" />
+        
+        {/* Floating Glass Shapes */}
+        <div className="absolute top-[15%] left-[8%] w-24 h-24 rounded-3xl bg-white/30 backdrop-blur-md border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.05)] animate-blob rotate-12" />
+        <div className="absolute bottom-[20%] right-[8%] w-32 h-32 rounded-full bg-white/30 backdrop-blur-md border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.05)] animate-blob animation-delay-4000" />
+        <div className="absolute top-[45%] right-[4%] w-16 h-16 rounded-2xl bg-white/30 backdrop-blur-md border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.05)] animate-blob animation-delay-2000 -rotate-12" />
+        <div className="absolute bottom-[15%] left-[12%] w-20 h-20 rounded-2xl bg-white/30 backdrop-blur-md border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.05)] animate-blob animation-delay-6000 rotate-45" />
       </div>
 
       {/* Main Wrapper Card */}
       <div className="w-full max-w-[1000px] bg-white/80 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] border border-white/60 overflow-hidden flex flex-col md:flex-row min-h-[600px] m-auto relative z-10">
         
-        {/* Left Panel – Gradient Design */}
-        <div className="hidden md:flex flex-col w-[45%] bg-gradient-to-br from-[#102A43] via-[#0066B3] to-[#00AEEF] p-12 relative overflow-hidden text-white">
-          {/* Subtle noise/mesh overlay effect */}
-          <div className="absolute inset-0 bg-white/5 mix-blend-overlay"></div>
+        {/* Left Panel – Image Background with Glassmorphism */}
+        <div className="hidden md:flex flex-col w-[45%] p-12 relative overflow-hidden text-white">
+          {/* Background Image */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center z-0" 
+            style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1649577193391-f13d769d011d?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")' }}
+          ></div>
+          {/* Dark Overlay for better contrast */}
+          <div className="absolute inset-0 bg-black/20 z-0"></div>
           
           {/* Logo */}
           <div className="relative z-10">
-             <img src="/rosier.png" alt="Rosier" className="h-10 object-contain brightness-0 invert" />
+             <img src="/rosier.png" alt="Rosier" className="h-10 object-contain brightness-0 invert drop-shadow-md" />
           </div>
 
-          <div className="relative z-10 mt-auto pt-20">
-            <p className="text-white/80 text-[15px] font-medium mb-3">You can easily</p>
-            <h2 className="text-[34px] font-bold text-white leading-[1.1] tracking-tight">
+          {/* Glassmorphism Text Container */}
+          <div className="relative z-10 mt-auto pt-6 pb-8 px-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)]">
+            <p className="text-white/90 text-[15px] font-medium mb-3">You can easily</p>
+            <h2 className="text-[34px] font-bold text-white leading-[1.1] tracking-tight drop-shadow-sm">
               Get access your personal hub for clarity and productivity
             </h2>
           </div>
