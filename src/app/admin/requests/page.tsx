@@ -58,7 +58,7 @@ export default function AdminRequestsPage() {
     });
 
   return (
-    <DashboardLayout title="Kelola Request" requireRole="admin">
+    <DashboardLayout title="Manage Request" requireRole="admin">
       {/* Filter Bar */}
       <div className="flex flex-col sm:flex-row gap-3 mb-5">
         <div className="relative flex-1">

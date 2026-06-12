@@ -6,7 +6,7 @@ import { login, getSession } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Eye, EyeOff, Leaf, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
@@ -54,180 +54,157 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Panel – Branding */}
-      <div className="hidden lg:flex flex-col w-1/2 bg-gradient-to-br from-[#102A43] via-[#0066B3] to-[#00AEEF] p-12 relative overflow-hidden">
-        {/* Decorative shapes */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full -translate-y-1/3 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#8DC63F]/10 rounded-full translate-y-1/3 -translate-x-1/3" />
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-white/3 rounded-full -translate-x-1/2 -translate-y-1/2" />
-
-        {/* Logo */}
-        <div className="relative z-10">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-              <Leaf className="text-white" size={20} />
-            </div>
-            <div>
-              <p className="text-white font-bold text-lg leading-tight">Rosier</p>
-              <p className="text-white/60 text-xs">Sample Portal</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Headline */}
-        <div className="relative z-10 flex-1 flex flex-col justify-center">
-          <h2 className="text-4xl font-bold text-white leading-tight">
-            Sample Requests,
-            <br />
-            <span className="text-[#8DC63F]">Simpler.</span>
-            <br />
-            Faster.
-          </h2>
-          <p className="mt-4 text-white/70 text-base leading-relaxed max-w-sm">
-            The Rosier B2B portal enables authorized distributors to submit, track,
-            and manage fertilizer product sample requests — fully digital.
-          </p>
-
-          {/* Feature list */}
-          <div className="mt-8 space-y-3">
-            {[
-              'Submit a request in minutes',
-              'Track status in real-time',
-              'Centralized request history',
-            ].map((f) => (
-              <div key={f} className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full bg-[#8DC63F] flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-[10px] font-bold">✓</span>
-                </div>
-                <p className="text-white/80 text-sm">{f}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <p className="relative z-10 text-white/40 text-xs">
-          © 2024 PT. Rosier Indonesia. All rights reserved.
-        </p>
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 relative overflow-hidden p-4 sm:p-8 z-0">
+      
+      {/* Animated Background Orbs */}
+      <div className="absolute inset-0 pointer-events-none z-[-1] overflow-hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[#0066B3]/20 blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-[#00AEEF]/20 blur-[120px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
+        <div className="absolute top-[20%] right-[20%] w-[40vw] h-[40vw] rounded-full bg-[#8DC63F]/20 blur-[100px] animate-pulse" style={{ animationDuration: '9s', animationDelay: '4s' }} />
       </div>
 
-      {/* Right Panel – Form */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-background">
-        <div className="w-full max-w-md">
-          {/* Mobile Logo */}
-          <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="w-8 h-8 rounded-xl bg-[#0066B3] flex items-center justify-center">
-              <Leaf className="text-white" size={16} />
+      {/* Main Wrapper Card */}
+      <div className="w-full max-w-[1000px] bg-white/80 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] border border-white/60 overflow-hidden flex flex-col md:flex-row min-h-[600px] m-auto relative z-10">
+        
+        {/* Left Panel – Gradient Design */}
+        <div className="hidden md:flex flex-col w-[45%] bg-gradient-to-br from-[#102A43] via-[#0066B3] to-[#00AEEF] p-12 relative overflow-hidden text-white">
+          {/* Subtle noise/mesh overlay effect */}
+          <div className="absolute inset-0 bg-white/5 mix-blend-overlay"></div>
+          
+          {/* Logo */}
+          <div className="relative z-10">
+             <img src="/rosier.png" alt="Rosier" className="h-10 object-contain brightness-0 invert" />
+          </div>
+
+          <div className="relative z-10 mt-auto pt-20">
+            <p className="text-white/80 text-[15px] font-medium mb-3">You can easily</p>
+            <h2 className="text-[34px] font-bold text-white leading-[1.1] tracking-tight">
+              Get access your personal hub for clarity and productivity
+            </h2>
+          </div>
+        </div>
+
+        {/* Right Panel – Form */}
+        <div className="flex-1 flex flex-col justify-center items-center p-8 md:p-12 relative bg-white">
+          
+          <div className="w-full max-w-[340px]">
+            {/* Mobile Logo */}
+            <div className="md:hidden mb-8 text-center flex justify-center">
+              <img src="/rosier.png" alt="Rosier" className="h-12 object-contain" />
             </div>
-            <span className="font-bold text-foreground">Rosier Sample Portal</span>
-          </div>
 
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-foreground">Welcome Back</h1>
-            <p className="text-muted-foreground mt-1 text-sm">
-              Sign in to your Rosier account to continue
-            </p>
-          </div>
-
-          {/* Demo Account Buttons */}
-          <div className="mb-6 p-4 rounded-xl bg-muted/50 border border-border">
-            <p className="text-xs font-semibold text-muted-foreground mb-3">
-              🔑 Demo Accounts – Click to autofill:
-            </p>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => fillDemo('distributor')}
-                className="flex-1 text-xs py-2 px-3 rounded-lg bg-[#0066B3]/10 text-[#0066B3] font-medium hover:bg-[#0066B3]/20 transition-colors"
-              >
-                👤 Distributor
-              </button>
-              <button
-                type="button"
-                onClick={() => fillDemo('admin')}
-                className="flex-1 text-xs py-2 px-3 rounded-lg bg-purple-100 text-purple-700 font-medium hover:bg-purple-200 transition-colors"
-              >
-                🛡️ Admin
-              </button>
+            {/* Desktop Logo (Centered above form) */}
+            <div className="hidden md:block mb-8 text-left">
+               <img src="/rosier.png" alt="Rosier" className="h-10 object-contain" />
             </div>
-          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Error */}
-            {error && (
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-destructive/10 border border-destructive/20">
-                <AlertCircle size={16} className="text-destructive flex-shrink-0" />
-                <p className="text-sm text-destructive">{error}</p>
+            <div className="mb-8">
+              <h1 className="text-[28px] font-bold text-slate-900 tracking-tight mb-3">Sign in to account</h1>
+              <p className="text-slate-500 text-[13px] leading-relaxed">
+                Access your Rosier portal anytime, anywhere - and keep everything flowing in one place.
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Error */}
+              {error && (
+                <div className="flex items-center gap-2 p-3 rounded-xl bg-red-50 border border-red-100">
+                  <AlertCircle size={16} className="text-red-500 flex-shrink-0" />
+                  <p className="text-xs font-medium text-red-600">{error}</p>
+                </div>
+              )}
+
+              {/* Email */}
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-[13px] font-bold text-slate-800">
+                  Your email
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@example.com"
+                  required
+                  autoComplete="email"
+                  className="h-11 rounded-xl bg-white border-slate-200 text-sm focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-all"
+                />
               </div>
-            )}
 
-            {/* Email */}
-            <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-sm font-medium">
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                required
-                autoComplete="email"
-                className="h-11"
-              />
-            </div>
-
-            {/* Password */}
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-sm font-medium">
+              {/* Password */}
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-[13px] font-bold text-slate-800">
                   Password
                 </Label>
-                <Link
-                  href="/forgot-password"
-                  className="text-xs text-[#0066B3] hover:underline"
-                >
-                  Forgot Password?
-                </Link>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••••"
+                    required
+                    autoComplete="current-password"
+                    className="h-11 pr-10 rounded-xl bg-white border-slate-200 text-sm focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
               </div>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                  required
-                  autoComplete="current-password"
-                  className="h-11 pr-10"
-                />
+
+              {/* Submit */}
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full h-11 bg-[#3b82f6] hover:bg-[#2563eb] text-white font-semibold rounded-xl shadow-[0_8px_20px_-6px_rgba(59,130,246,0.5)] transition-all mt-2"
+              >
+                {isLoading ? (
+                  <span className="flex items-center gap-2">
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Signing in...
+                  </span>
+                ) : (
+                  'Get Started'
+                )}
+              </Button>
+            </form>
+
+            {/* Demo Accounts (styled like "or continue with") */}
+            <div className="mt-8">
+              <div className="relative flex items-center mb-6">
+                <div className="flex-grow border-t border-slate-200"></div>
+                <span className="flex-shrink-0 mx-4 text-[11px] text-slate-400 font-medium">or continue with demo</span>
+                <div className="flex-grow border-t border-slate-200"></div>
+              </div>
+
+              <div className="flex gap-3">
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  onClick={() => fillDemo('distributor')}
+                  className="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition-colors"
                 >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  Distributor
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fillDemo('admin')}
+                  className="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition-colors"
+                >
+                  Admin
                 </button>
               </div>
             </div>
 
-            {/* Submit */}
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="w-full h-11 bg-[#0066B3] hover:bg-[#004d86] text-white font-semibold mt-2"
-            >
-              {isLoading ? (
-                <span className="flex items-center gap-2">
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Signing in...
-                </span>
-              ) : (
-                'Sign In'
-              )}
-            </Button>
-          </form>
+            <p className="mt-8 text-center text-[13px] text-slate-500 font-medium">
+              Don't have an account? <Link href="#" className="text-[#3b82f6] hover:underline font-bold">Sign up</Link>
+            </p>
+
+          </div>
         </div>
       </div>
     </div>
