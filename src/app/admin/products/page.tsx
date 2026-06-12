@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { PRODUCTS } from '@/data/products';
 import { Product, ProductCategory } from '@/types';
@@ -28,31 +28,46 @@ import { Plus, Pencil, Trash2, Package, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const CATEGORY_COLORS: Record<string, string> = {
-  NPK: 'bg-blue-100 text-blue-700',
-  Organic: 'bg-green-100 text-green-700',
-  Micro: 'bg-orange-100 text-orange-700',
-  Biological: 'bg-purple-100 text-purple-700',
-  Specialty: 'bg-pink-100 text-pink-700',
+  'Liquid Fertilizer': 'text-pink-600',
+  'Magnesium Fertilizer': 'text-lime-600',
+  'Micronutrient Fertilizer': 'text-red-600',
+  'Calcium Fertilizer': 'text-emerald-600',
+  'Starter Fertilizer': 'text-orange-600',
+  'Liquid NPK Fertilizer': 'text-fuchsia-600',
+  'Zinc Fertilizer': 'text-blue-600',
+  'Copper Fertilizer': 'text-amber-600',
+  'Chelated Micronutrient': 'text-slate-600',
 };
 
 const CATEGORY_CARD_BG: Record<string, string> = {
-  NPK: 'bg-gradient-to-br from-blue-50/80 to-white border-blue-100/50',
-  Organic: 'bg-gradient-to-br from-green-50/80 to-white border-green-100/50',
-  Micro: 'bg-gradient-to-br from-orange-50/80 to-white border-orange-100/50',
-  Biological: 'bg-gradient-to-br from-purple-50/80 to-white border-purple-100/50',
-  Specialty: 'bg-gradient-to-br from-pink-50/80 to-white border-pink-100/50',
+  'Liquid Fertilizer': 'bg-gradient-to-br from-pink-100 to-rose-50/80 border-white shadow-[0_8px_30px_rgb(252,165,165,0.2)]',
+  'Magnesium Fertilizer': 'bg-gradient-to-br from-lime-100 to-green-50/80 border-white shadow-[0_8px_30px_rgb(190,242,100,0.2)]',
+  'Micronutrient Fertilizer': 'bg-gradient-to-br from-red-100 to-orange-50/80 border-white shadow-[0_8px_30px_rgb(252,165,165,0.2)]',
+  'Calcium Fertilizer': 'bg-gradient-to-br from-emerald-100 to-teal-50/80 border-white shadow-[0_8px_30px_rgb(110,231,183,0.2)]',
+  'Starter Fertilizer': 'bg-gradient-to-br from-orange-100 to-amber-50/80 border-white shadow-[0_8px_30px_rgb(253,186,116,0.2)]',
+  'Liquid NPK Fertilizer': 'bg-gradient-to-br from-fuchsia-100 to-purple-50/80 border-white shadow-[0_8px_30px_rgb(240,171,252,0.2)]',
+  'Zinc Fertilizer': 'bg-gradient-to-br from-blue-100 to-indigo-50/80 border-white shadow-[0_8px_30px_rgb(147,197,253,0.2)]',
+  'Copper Fertilizer': 'bg-gradient-to-br from-yellow-100 to-amber-50/80 border-white shadow-[0_8px_30px_rgb(253,224,71,0.2)]',
+  'Chelated Micronutrient': 'bg-gradient-to-br from-slate-200 to-slate-50/80 border-white shadow-[0_8px_30px_rgb(203,213,225,0.2)]',
 };
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>(PRODUCTS);
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('q')) {
+      setSearch(params.get('q') || '');
+    }
+  }, []);
   const [showDialog, setShowDialog] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
 
   // Form state
   const [formName, setFormName] = useState('');
-  const [formCategory, setFormCategory] = useState<ProductCategory>('NPK');
+  const [formCategory, setFormCategory] = useState<ProductCategory>('Liquid Fertilizer');
   const [formDesc, setFormDesc] = useState('');
   const [formPackaging, setFormPackaging] = useState('');
   const [formImage, setFormImage] = useState('');
@@ -67,7 +82,7 @@ export default function AdminProductsPage() {
   const openCreate = () => {
     setEditingProduct(null);
     setFormName('');
-    setFormCategory('NPK');
+    setFormCategory('Liquid Fertilizer');
     setFormDesc('');
     setFormPackaging('');
     setFormImage('');
@@ -150,14 +165,14 @@ export default function AdminProductsPage() {
           <div
             key={product.id}
             className={cn(
-              "rounded-[2rem] p-5 border shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_20px_-4px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group",
-              CATEGORY_CARD_BG[product.category] || "bg-white border-slate-100"
+              "rounded-[1.5rem] p-5 border-[2px] hover:-translate-y-1 transition-all duration-300 flex flex-col relative backdrop-blur-xl group",
+              CATEGORY_CARD_BG[product.category] || "bg-gradient-to-br from-slate-50 to-white border-white shadow-sm"
             )}
           >
             {/* Top Row: Icon & Actions */}
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between relative z-10">
               <div className={cn(
-                "w-11 h-11 rounded-[0.85rem] flex items-center justify-center flex-shrink-0 transition-colors",
+                "w-11 h-11 rounded-[0.85rem] flex items-center justify-center flex-shrink-0 transition-colors bg-white/70 backdrop-blur-sm border border-white/50 shadow-sm",
                 CATEGORY_COLORS[product.category]
               )}>
                 <Package size={20} />
@@ -165,14 +180,14 @@ export default function AdminProductsPage() {
               <div className="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
                   onClick={() => openEdit(product)}
-                  className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                  className="w-8 h-8 rounded-full bg-white/70 backdrop-blur-sm border border-white/50 flex items-center justify-center text-slate-500 hover:bg-blue-50 hover:text-blue-600 shadow-sm transition-colors"
                   title="Edit Product"
                 >
                   <Pencil size={13} />
                 </button>
                 <button
                   onClick={() => setDeleteTarget(product)}
-                  className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-red-50 hover:text-red-500 transition-colors"
+                  className="w-8 h-8 rounded-full bg-white/70 backdrop-blur-sm border border-white/50 flex items-center justify-center text-slate-500 hover:bg-red-50 hover:text-red-500 shadow-sm transition-colors"
                   title="Delete Product"
                 >
                   <Trash2 size={13} />
@@ -181,31 +196,20 @@ export default function AdminProductsPage() {
             </div>
 
             {/* Content */}
-            <div className="mt-5 flex-1">
-              <h3 className="text-[17px] font-bold text-slate-800 leading-snug line-clamp-2">
+            <div className="mt-5 flex-1 relative z-10">
+              <h3 className="text-[17px] font-extrabold text-slate-800 leading-snug line-clamp-2 tracking-tight">
                 {product.name}
               </h3>
-              <p className="text-[13px] text-slate-500 mt-2.5 line-clamp-3 leading-relaxed">
+              <p className="text-[13px] text-slate-600/90 mt-2.5 line-clamp-3 leading-relaxed font-medium">
                 {product.description}
               </p>
             </div>
 
             {/* Bottom Section */}
-            <div className="mt-5 pt-5 border-t border-slate-50/50">
-              <div className="flex items-center justify-between mb-4 px-1">
-                <span className={cn(
-                  'text-[11px] font-bold px-2.5 py-1 rounded-full',
-                  CATEGORY_COLORS[product.category]
-                )}>
-                  {product.category}
-                </span>
-                <span className="text-[11px] font-medium text-slate-400 bg-slate-50 px-2.5 py-1 rounded-full">
-                  {product.packaging}
-                </span>
-              </div>
+            <div className="mt-6 relative z-10">
               <button
                 onClick={() => openEdit(product)}
-                className="w-full py-2.5 rounded-full bg-slate-50 text-slate-600 text-[13px] font-semibold hover:bg-[#0066B3] hover:text-white transition-colors"
+                className="w-full py-2.5 rounded-full bg-slate-800/80 hover:bg-slate-800 text-white text-[13px] font-bold shadow-sm backdrop-blur-md transition-all border border-slate-700/50"
               >
                 Manage Product
               </button>

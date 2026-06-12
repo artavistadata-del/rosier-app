@@ -200,9 +200,9 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <p className="mt-8 text-center text-[13px] text-slate-500 font-medium">
+            {/* <p className="mt-8 text-center text-[13px] text-slate-500 font-medium">
               Don't have an account? <Link href="#" className="text-[#3b82f6] hover:underline font-bold">Sign up</Link>
-            </p>
+            </p> */}
 
           </div>
         </div>

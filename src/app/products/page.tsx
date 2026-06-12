@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import ProductCard from '@/components/products/ProductCard';
 import { PRODUCTS } from '@/data/products';
@@ -18,6 +18,13 @@ export default function ProductsPage() {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'All'>('All');
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('q')) {
+      setSearch(params.get('q') || '');
+    }
+  }, []);
 
   const filtered = PRODUCTS.filter((p) => {
     const matchSearch =

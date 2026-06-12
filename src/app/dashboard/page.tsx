@@ -132,8 +132,8 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          <div className="overflow-x-auto flex-1">
-            <table className="w-full text-left text-sm">
+          <div className="overflow-x-auto flex-1 -mx-6 px-6 sm:mx-0 sm:px-0">
+            <table className="w-full min-w-[500px] text-left text-sm">
               <thead className="text-xs text-slate-400 uppercase bg-slate-50/50 rounded-xl">
                 <tr>
                   <th className="px-4 py-3 font-semibold rounded-l-xl">ID</th>

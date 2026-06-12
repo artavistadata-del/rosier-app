@@ -73,7 +73,7 @@ const ADMIN_GROUPS: NavGroup[] = [
   }
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ className, isMobile }: { className?: string, isMobile?: boolean }) {
   const pathname = usePathname();
   const router = useRouter();
   const [user, setUser] = useState<AuthSession['user'] | null>(null);
@@ -93,17 +93,21 @@ export default function Sidebar() {
   return (
     <aside 
       className={cn(
-        "flex-shrink-0 flex flex-col bg-white rounded-[2rem] border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.02)] relative text-slate-700 h-full transition-all duration-300",
-        isCollapsed ? "w-[100px]" : "w-[260px]"
+        "flex-shrink-0 flex flex-col relative text-slate-700 h-full transition-all duration-300",
+        !isMobile && "bg-white rounded-[2rem] border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.02)] hidden md:flex",
+        isCollapsed && !isMobile ? "w-[100px]" : "w-[260px]",
+        className
       )}
     >
       {/* Collapse Button */}
-      <button 
-        onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute -right-3 top-10 w-6 h-6 bg-white rounded-full border border-slate-200 flex items-center justify-center text-slate-400 shadow-sm z-10 hover:text-slate-600 hover:border-slate-300 transition-all"
-      >
-        <ChevronRight size={14} className={cn("transition-transform duration-300", !isCollapsed && "rotate-180")} />
-      </button>
+      {!isMobile && (
+        <button 
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="absolute -right-3 top-10 w-6 h-6 bg-white rounded-full border border-slate-200 flex items-center justify-center text-slate-400 shadow-sm z-10 hover:text-slate-600 hover:border-slate-300 transition-all"
+        >
+          <ChevronRight size={14} className={cn("transition-transform duration-300", !isCollapsed && "rotate-180")} />
+        </button>
+      )}
 
       {/* Logo */}
       <div className={cn("py-8 flex", isCollapsed ? "justify-center px-0" : "px-6")}>
